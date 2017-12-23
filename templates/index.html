@@ -1,5 +1,12 @@
 <html>
-    <head></head>
+    <head>
+        <style>
+            #search-results tr:hover {
+                background-color: lightgrey;
+                cursor: pointer;
+            }
+        </style>
+    </head>
     <body>
         <form id="search-form" onsubmit="return false">
             <input name="search" />
@@ -26,6 +33,9 @@
                     method: "POST",
                     data: $("#search-form").serialize(),
                     success: function(rawData) {
+
+                        console.log(rawData);
+
                         var parsed = JSON.parse(rawData);
                         if (!parsed) return;
 
@@ -43,6 +53,13 @@
                                     row.appendChild(td);
                                 }
                             }
+
+                            $(row).on("click", function() {
+                                $.ajax({
+                                    url: "/books/add?id=" + result.ID,
+                                    method: "GET"
+                                })
+                            })
 
                             searchResults.append(row);
                         });
